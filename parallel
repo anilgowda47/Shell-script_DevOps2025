@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('0 0 * * *')  
+    }
+
+    stages {
+        stage('Unit Tests') {
+            steps {
+                sh '''
+                    echo "Installing dependencies..."
+                    pip install -r requirements.txt
+
+                    echo "Running unit tests..."
+                    pytest tests/unit
+                '''
+            }
+        }
+
+        stage('Performance Tests') {
+            steps {
+                sh '''
+                    echo "Installing dependencies..."
+                    pip install -r requirements.txt
+
+                    echo "Running performance tests..."
+                    pytest tests/performance --durations=10
+                '''
+            }
+        }
+    }
+}
